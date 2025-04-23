@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Media;
+using System.Threading;
 
 namespace CyberSecurityBot
 {
@@ -11,8 +12,8 @@ namespace CyberSecurityBot
             DisplayBanner();
             string userName = GetUserName();
 
-            Console.WriteLine($"\nWelcome, {userName}! I'm your Cybersecurity Awareness Bot.");
-            Console.WriteLine("Ask me anything related to cybersecurity or type 'exit' to quit.\n");
+            typingEffect($"\nWelcome, {userName}! I'm your Cybersecurity Awareness Bot.");
+            typingEffect("Ask me anything related to cybersecurity or type 'exit' to quit.\n");
 
             while (true)
             {
@@ -25,13 +26,13 @@ namespace CyberSecurityBot
 
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine("I didn’t quite understand that. Could you rephrase?");
+                    DisplayWithBorder("I didn’t quite understand that.\nCould you rephrase?");
                     continue;
                 }
 
                 if (input == "exit")
                 {
-                    Console.WriteLine("Stay safe online! Goodbye!");
+                    DisplayWithBorder("Stay safe online! Goodbye!");
                     break;
                 }
 
@@ -45,7 +46,7 @@ namespace CyberSecurityBot
             {
                 try
                 {
-                    SoundPlayer player = new SoundPlayer(@"C:\\Users\\Maseo Junior\\Desktop\\CyberSecurityBot\\Recording.wav");
+                    SoundPlayer player = new SoundPlayer(@"Recording.wav");
                     player.Load();
                     player.PlaySync();
                 }
@@ -90,33 +91,71 @@ namespace CyberSecurityBot
             return char.ToUpper(name[0]) + name.Substring(1);
         }
 
+        public static void typingEffect(string message, int delay = 30)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            foreach (char ch in message)
+            {
+                Console.Write(ch);
+                Thread.Sleep(delay);
+            }
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+
+        static void DisplayWithBorder(string message)
+        {
+            string[] lines = message.Split('\n');
+            int maxLength = 0;
+
+            foreach (string line in lines)
+            {
+                if (line.Length > maxLength)
+                    maxLength = line.Length;
+            }
+
+            string topBorder = "╔" + new string('═', maxLength + 2) + "╗";
+            string bottomBorder = "╚" + new string('═', maxLength + 2) + "╝";
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(topBorder);
+
+            foreach (string line in lines)
+            {
+                Console.WriteLine($"║ {line.PadRight(maxLength)} ║");
+            }
+
+            Console.WriteLine(bottomBorder);
+            Console.ResetColor();
+        }
+
         static void RespondToInput(string input)
         {
             switch (input.ToLower())
             {
                 case "how are you":
-                    Console.WriteLine("Thanks for asking! I'm operating smoothly in the digital world. How can I assist you with cybersecurity today?");
+                    DisplayWithBorder("Thanks for asking! I'm operating smoothly in the digital world.\nHow can I assist you with cybersecurity today?");
                     break;
 
-                case "what's your purpose":
-                case "ce":
-                    Console.WriteLine("I’m here to help you learn and stay safe in the cyber world.");
+                case string x when x.Contains("what's your purpose"):
+                case string x2 when x2.Contains("what is your purpose"):
+                    DisplayWithBorder("I’m here to help you learn and stay safe in the cyber world.");
                     break;
 
                 case string x when x.Contains("what can i ask you about"):
-                    Console.WriteLine("You can ask me about password safety, phishing, and safe browsing!");
+                    DisplayWithBorder("You can ask me about password safety, phishing, and safe browsing!");
                     break;
 
                 case string x when x.Contains("password safety"):
-                    Console.WriteLine("Use strong passwords with letters, numbers, and symbols. Avoid using personal info.");
+                    DisplayWithBorder("Use strong passwords with letters, numbers, and symbols.\nAvoid using personal info.");
                     break;
 
-                case string x when x.Contains("phishing") :
-                    Console.WriteLine("Beware of emails or messages asking for personal info. Always verify the sender.");
+                case string x when x.Contains("phishing"):
+                    DisplayWithBorder("Beware of emails or messages asking for personal info.\nAlways verify the sender.");
                     break;
 
                 case "safe browsing":
-                    Console.WriteLine("Stick to secure (https) websites and avoid downloading from unknown sources.");
+                    DisplayWithBorder("Stick to secure (https) websites and avoid downloading from unknown sources.");
                     break;
 
                 case "help":
@@ -124,21 +163,22 @@ namespace CyberSecurityBot
                     break;
 
                 default:
-                    Console.WriteLine("I didn’t quite understand that. Could you rephrase or type 'help'?");
+                    DisplayWithBorder("I didn’t quite understand that.\nCould you rephrase or type 'help'?");
                     break;
             }
         }
 
         static void ShowHelp()
         {
-            Console.WriteLine("\nYou can ask me about:");
-            Console.WriteLine("- how are you");
-            Console.WriteLine("- what's your purpose / what is your purpose");
-            Console.WriteLine("- what can I ask you about");
-            Console.WriteLine("- password safety");
-            Console.WriteLine("- phishing");
-            Console.WriteLine("- safe browsing");
-            Console.WriteLine("- exit");
+            string helpText = "\nYou can ask me about:\n" +
+                              "- how are you\n" +
+                              "- what's your purpose / what is your purpose\n" +
+                              "- what can I ask you about\n" +
+                              "- password safety\n" +
+                              "- phishing\n" +
+                              "- safe browsing\n" +
+                              "- exit";
+            DisplayWithBorder(helpText);
         }
     }
 }
