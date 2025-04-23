@@ -12,6 +12,11 @@ namespace CyberSecurityBot
             DisplayBanner();
             string userName = GetUserName();
 
+            // Code Attribution
+            //Typing Effect Logic: Inspired by examples from https://gist.github.com/joshschmelzle/610451c749dd14bb777a?utm
+            //joshschmelzle
+            //https://gist.github.com/joshschmelzle
+
             typingEffect($"\nWelcome, {userName}! I'm your Cybersecurity Awareness Bot.");
             typingEffect("Ask me anything related to cybersecurity or type 'exit' to quit.\n");
 
@@ -40,6 +45,10 @@ namespace CyberSecurityBot
             }
         }
 
+        // Code Attribution
+        //SoundPlayer usage: Based on Microsoft's documentation for [System.Media.SoundPlayer](https://learn.microsoft.com/en-us/dotnet/api/system.media.soundplayer)
+
+
         static void PlayVoiceGreeting()
         {
             if (OperatingSystem.IsWindows())
@@ -60,6 +69,10 @@ namespace CyberSecurityBot
                 Console.WriteLine("(Voice greeting skipped – only available on Windows)");
             }
         }
+
+        // Code Attribution
+        //This was made using patorjk.com
+        //ASCII Banner: Generated using [TAAG] (https://patorjk.com/software/taag)
 
         static void DisplayBanner()
         {
@@ -93,7 +106,7 @@ namespace CyberSecurityBot
 
         public static void typingEffect(string message, int delay = 30)
         {
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             foreach (char ch in message)
             {
                 Console.Write(ch);
@@ -102,6 +115,11 @@ namespace CyberSecurityBot
             Console.WriteLine();
             Console.ResetColor();
         }
+
+        // Code Attribution
+        //Console Border Drawing: Referenced from discussions on[Stack Overflow](https://stackoverflow.com/questions/23245726/how-to-draw-a-border-around-text-in-console-application-c)
+        //UvarajGopu
+        //https://stackoverflow.com/users/2859140/uvarajgopu
 
         static void DisplayWithBorder(string message)
         {
@@ -180,5 +198,9 @@ namespace CyberSecurityBot
                               "- exit";
             DisplayWithBorder(helpText);
         }
+
+        
+     
+
     }
 }
